@@ -21,7 +21,7 @@ export class AuthService {
         const accessToken = this.jwtService.sign(payload);
 
         const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET || 'refresh_secret', {
-            expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || '7d',
+            expiresIn: (process.env.REFRESH_TOKEN_EXPIRES_IN || '7d') as string,
         });
 
         await this.usersService.setRefreshToken(user.id, refreshToken);
@@ -51,7 +51,7 @@ export class AuthService {
             const payload = { sub: found.id, username: found.username, role: found.role };
             const accessToken = this.jwtService.sign(payload);
             const newRefresh = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET || 'refresh_secret', {
-                expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || '7d',
+                expiresIn: (process.env.REFRESH_TOKEN_EXPIRES_IN || '7d') as string,
             });
             await this.usersService.setRefreshToken(found.id, newRefresh);
             return { accessToken, refreshToken: newRefresh };
